@@ -15,7 +15,7 @@ services:
     working_dir: /web
     volumes:
     - ../web:/web
-    - ../.env:/web/.env
+#    - ../.env:/web/.env
     tty: true
     networks:
       - frontend
@@ -27,10 +27,8 @@ services:
       context: ./nginx
     container_name: py-nginx
     working_dir: /web
-    volumes_from:
-      - php-fpm
     depends_on:
-      - php-fpm
+      - python
     ports:
     - 80:80
     - 443:443
@@ -49,21 +47,4 @@ services:
     - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     - ./mysql/data:/var/lib/mysql
     networks:
-      - backend
-
-  phpmyadmin:
-    image: py-mysql-admin
-    build:
-      context: ./phpmyadmin
-    container_name: api-mysql-admin
-    restart: always
-    depends_on:
-      - mysql
-    environment:
-      - PMA_HOST=api-mysql
-      - PMA_ABSOLUTE_URI="${PHP_MY_ADMIN_DOMAIN}"
-      - PMA_USER=root
-      - PMA_PASSWORD=secret
-    networks:
-      - frontend
       - backend
