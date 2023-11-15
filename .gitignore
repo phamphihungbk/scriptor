@@ -1,2 +1,4 @@
 .idea
 config.cfg
+node_modules
+storybook.log
